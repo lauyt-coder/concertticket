@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ Y2K 演唱會夢幻記憶館 Concert Memory Box ✨</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: VT323 & Comic Neue & Pixel fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;700&family=Mina:wght@400;700&family=VT323&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        y2k: {
+                            pink: '#ff7eb9',
+                            hotpink: '#ff2a85',
+                            purple: '#a855f7',
+                            lavender: '#e9d5ff',
+                            cyan: '#00f0ff',
+                            yellow: '#ffee00',
+                            lime: '#39ff14',
+                            bg: '#fbf5ff',
+                            darkbg: '#1a0b2e'
+                        }
+                    },
+                    fontFamily: {
+                        pixel: ['VT323', 'monospace'],
+                        y2k: ['"Zen Maru Gothic"', 'sans-serif'],
+                        tech: ['"Chakra Petch"', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'y2k': '4px 4px 0px #000000',
+                        'y2k-lg': '8px 8px 0px #000000',
+                        'y2k-pink': '4px 4px 0px #ff2a85',
+                        'y2k-cyan': '4px 4px 0px #00f0ff',
+                        'glow': '0 0 15px rgba(255, 126, 185, 0.6)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background-color: #fce7f3;
+            background-image: 
+                radial-gradient(#ff7eb9 1.5px, transparent 1.5px),
+                radial-gradient(#00f0ff 1.5px, #fce7f3 1.5px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        /* Y2K Retro Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3e8ff;
+            border-left: 2px solid #000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff7eb9;
+            border: 2px solid #000;
+            border-radius: 4px;
+        }
+
+        /* Scanline effect */
+        .scanlines {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.05) 50%
+            );
+            background-size: 100% 4px;
+        }
+
+        /* Y2K Window Design */
+        .y2k-window {
+            border: 3px solid #000000;
+            box-shadow: 6px 6px 0px #000000;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .y2k-window-header {
+            background: linear-gradient(90deg, #ff7eb9 0%, #a855f7 100%);
+            border-bottom: 3px solid #000000;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { filter: drop-shadow(0 0 5px #ff7eb9); }
+            50% { filter: drop-shadow(0 0 15px #00f0ff); }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 3s infinite;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-cd {
+            animation: spin-slow 8s linear infinite;
+        }
+
+        /* Sticker badge */
+        .y2k-sticker {
+            display: inline-block;
+            transform: rotate(-3deg);
+            transition: all 0.2s ease;
+        }
+        .y2k-sticker:hover {
+            transform: rotate(3deg) scale(1.08);
+        }
+
+        /* Intersection Observer Fade In */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="text-slate-900 min-h-screen pb-16">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b-4 border-black px-4 py-3 shadow-md">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="w-9 h-9 rounded-full bg-y2k-hotpink border-2 border-black flex items-center justify-center text-white text-xl font-black shadow-y2k">
+                    <i class="fa-solid fa-compact-disc animate-spin-cd"></i>
+                </div>
+                <span class="font-pixel text-2xl md:text-3xl font-bold tracking-widest text-y2k-hotpink drop-shadow">
+                    CONCERT_BOX.EXE
+                </span>
+            </div>
+            
+            <nav class="hidden md:flex items-center gap-4 text-sm font-bold">
+                <a href="#intro" class="hover:text-y2k-hotpink transition-colors">✨ 故事入口</a>
+                <a href="#uploader" class="hover:text-y2k-hotpink transition-colors">📸 門票記錄</a>
+                <a href="#ai-section" class="hover:text-y2k-hotpink transition-colors">🤖 AI 助理</a>
+                <a href="#player" class="hover:text-y2k-hotpink transition-colors">🎧 Y2K 播放器</a>
+            </nav>
+
+            <button onclick="toggleModal('info-modal')" class="bg-y2k-yellow hover:bg-yellow-300 text-black border-2 border-black px-3 py-1.5 rounded-lg font-bold text-xs md:text-sm shadow-y2k transition-transform active:translate-x-1 active:translate-y-1">
+                <i class="fa-solid fa-circle-question mr-1"></i> 使用說明
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-5xl mx-auto px-4 pt-8 space-y-16">
+
+        <!-- 1. 主題導入 (Story Intro Section) -->
+        <section id="intro" class="fade-in-section">
+            <div class="y2k-window relative bg-gradient-to-br from-purple-100 via-pink-100 to-cyan-100 p-6 md:p-10">
+                <!-- Retro Window Bar -->
+                <div class="absolute top-0 left-0 right-0 y2k-window-header">
+                    <span class="text-xs font-pixel font-bold text-white tracking-widest">
+                        <i class="fa-solid fa-heart mr-1"></i> WELCOME_TO_MY_MEMORY_ARCHIVE.SYS
+                    </span>
+                    <div class="flex gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-yellow-300 border border-black inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400 border border-black inline-block"></span>
+                        <span class="w-3 h-3 rounded-full bg-red-400 border border-black inline-block"></span>
+                    </div>
+                </div>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                    <div class="md:col-span-7 space-y-4">
+                        <div class="inline-block bg-y2k-cyan border-2 border-black px-3 py-1 rounded-full text-xs font-bold shadow-y2k y2k-sticker">
+                            💖 追星族的時光膠囊 💖
+                        </div>
+                        <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
+                            你的演唱會門票<br>
+                            <span class="text-y2k-hotpink bg-yellow-200 px-2 py-0.5 border-2 border-black shadow-y2k inline-block transform -rotate-1 mt-1">
+                                數位珍藏館
+                            </span>
+                        </h1>
+                        <p class="text-slate-700 font-medium leading-relaxed">
+                            這裡是用來整理與保存你我看過的所有演唱會門票存根、現場照片與紀錄的專屬空間。上傳門票卡片、紀錄曲目，並搭配背景音樂隨時重溫！
+                        </p>
+                        
+                        <!-- Quick Stats / Badges -->
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <span onclick="showTip('門票數位化', '將容易褪色的感熱紙門票拍照上雲端，永不褪色！')" class="cursor-pointer bg-white border-2 border-black px-3 py-1.5 rounded-xl text-xs font-bold shadow-y2k hover:bg-y2k-lavender transition-all">
+                                🎫 門票永久保存
+                            </span>
+                            <span onclick="showTip('歌單紀錄', '自動整理並記錄該場演唱會的經典歌單！')" class="cursor-pointer bg-white border-2 border-black px-3 py-1.5 rounded-xl text-xs font-bold shadow-y2k hover:bg-y2k-lavender transition-all">
+                                🎶 演唱會歌單
+                            </span>
+                            <span onclick="showTip('YouTube BGM', '選一首主題曲，邊看相簿邊聽音樂，沉浸感滿分！')" class="cursor-pointer bg-white border-2 border-black px-3 py-1.5 rounded-xl text-xs font-bold shadow-y2k hover:bg-y2k-lavender transition-all">
+                                🎵 沉浸式 BGM
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Right Graphic Illustration -->
+                    <div class="md:col-span-5 flex justify-center">
+                        <div class="relative w-64 h-64 bg-y2k-pink rounded-3xl border-4 border-black shadow-y2k-lg p-4 flex flex-col items-center justify-center animate-float">
+                            <!-- Y2K Ticket Graphic -->
+                            <div class="w-full bg-yellow-100 border-2 border-black rounded-xl p-3 transform -rotate-3 shadow-y2k mb-3">
+                                <div class="flex justify-between text-xs font-pixel font-bold border-b border-dashed border-black pb-1">
+                                    <span>VIP PASS</span>
+                                    <span>ROW 01 SEAT 08</span>
+                                </div>
+                                <div class="text-center font-black text-lg text-y2k-hotpink my-1">LIVE IN TAIPEI</div>
+                                <div class="text-[10px] text-center text-gray-600">2024.12.31 ARENA SHOW</div>
+                            </div>
+                            <div class="text-center">
+                                <span class="bg-black text-y2k-lime font-pixel text-lg px-2 py-0.5 rounded">NOW PLAYING: MEMORIES.MP3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 核心內容：門票上傳與新紀錄建立區 -->
+        <section id="uploader" class="fade-in-section">
+            <div class="y2k-window bg-white">
+                <div class="y2k-window-header">
+                    <span class="text-xs font-pixel font-bold text-white tracking-widest">
+                        <i class="fa-solid fa-plus-circle mr-1"></i> ADD_NEW_CONCERT_RECORD
+                    </span>
+                    <span class="text-xs font-pixel text-white">STEP 1 / 3</span>
+                </div>
+
+                <div class="p-6 md:p-8 space-y-6">
+                    <div class="border-b-2 border-slate-100 pb-4">
+                        <h2 class="text-2xl font-black flex items-center gap-2">
+                            <span class="text-y2k-hotpink">📸</span> 上傳演唱會門票與記憶相片
+                        </h2>
+                        <p class="text-sm text-slate-500">上傳門票存根、手燈合照或周邊相片，自動產生 Y2K 復古門票卡！</p>
+                    </div>
+
+                    <form id="concertForm" onsubmit="handleFormSubmit(event)" class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                        <!-- Left Form Inputs -->
+                        <div class="md:col-span-7 space-y-4">
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">🎤 歌手 / 樂團名稱</label>
+                                <input type="text" id="artistName" required placeholder="例如：蔡依林, Mayday 五月天, IU, Taylor Swift" 
+                                    class="w-full border-2 border-black rounded-lg p-2.5 text-sm font-bold focus:ring-2 focus:ring-y2k-pink outline-none shadow-y2k">
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">🎪 巡迴 / 演唱會名稱</label>
+                                    <input type="text" id="tourName" required placeholder="例如：Ugly Beauty 世界巡迴" 
+                                        class="w-full border-2 border-black rounded-lg p-2.5 text-sm font-bold focus:ring-2 focus:ring-y2k-pink outline-none shadow-y2k">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-slate-700 mb-1">📅 日期</label>
+                                    <input type="date" id="concertDate" required 
+                                        class="w-full border-2 border-black rounded-lg p-2.5 text-sm font-bold focus:ring-2 focus:ring-y2k-pink outline-none shadow-y2k">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">📍 演唱會地點 / 場館</label>
+                                <input type="text" id="venue" placeholder="例如：台北小巨蛋, 高雄世運主場館" 
+                                    class="w-full border-2 border-black rounded-lg p-2.5 text-sm font-bold focus:ring-2 focus:ring-y2k-pink outline-none shadow-y2k">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-slate-700 mb-1">💬 心情小記 / 閃光時刻</label>
+                                <textarea id="personalNote" rows="2" placeholder="記下當下最感動的那一幕或開場第一首歌的震撼..." 
+                                    class="w-full border-2 border-black rounded-lg p-2.5 text-sm font-bold focus:ring-2 focus:ring-y2k-pink outline-none shadow-y2k"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Right Photo Drag&Drop Area -->
+                        <div class="md:col-span-5 flex flex-col">
+                            <label class="block text-sm font-bold text-slate-700 mb-1">🎞️ 門票存根 / 現場照片</label>
+                            <div id="dropZone" onclick="document.getElementById('fileInput').click()" 
+                                class="flex-1 border-3 border-dashed border-black bg-y2k-lavender/30 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-y2k-lavender/60 transition-all min-h-[180px] shadow-y2k relative group overflow-hidden">
+                                
+                                <input type="file" id="fileInput" accept="image/*" class="hidden" onchange="previewImage(event)">
+                                
+                                <div id="uploadPrompt" class="space-y-2">
+                                    <div class="w-12 h-12 rounded-full bg-y2k-pink border-2 border-black flex items-center justify-center mx-auto text-white text-xl shadow-y2k group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </div>
+                                    <p class="text-xs font-bold text-slate-700">點擊或拖曳照片至此處</p>
+                                    <p class="text-[10px] text-slate-500">支援 JPG, PNG, WEBP</p>
+                                </div>
+
+                                <img id="imagePreview" class="hidden absolute inset-0 w-full h-full object-cover rounded-xl" alt="Preview">
+                            </div>
+                        </div>
+
+                        <!-- Form Submit Button -->
+                        <div class="md:col-span-12 flex justify-end gap-3 pt-2">
+                            <button type="button" onclick="triggerAiSearch()" class="bg-y2k-cyan hover:bg-cyan-300 text-black border-2 border-black px-4 py-2.5 rounded-xl font-bold text-sm shadow-y2k active:translate-x-0.5 active:translate-y-0.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-wand-magic-sparkles text-purple-600"></i> AI 預先生成歌單
+                            </button>
+                            <button type="submit" class="bg-y2k-hotpink hover:bg-pink-600 text-white border-2 border-black px-6 py-2.5 rounded-xl font-bold text-sm shadow-y2k active:translate-x-0.5 active:translate-y-0.5 flex items-center gap-1.5">
+                                <i class="fa-solid fa-floppy-disk"></i> 儲存到演唱會寶盒
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. AI 智慧搜尋與資訊紀錄區 (Gemini AI Feature) -->
+        <section id="ai-section" class="fade-in-section">
+            <div class="y2k-window bg-slate-900 text-white">
+                <div class="y2k-window-header !bg-gradient-to-r !from-indigo-600 !to-purple-600">
+                    <span class="text-xs font-pixel font-bold text-white tracking-widest">
+                        <i class="fa-solid fa-robot mr-1"></i> GEMINI_AI_SEARCH_ENGINE.EXE
+                    </span>
+                    <span class="bg-y2k-lime text-black text-[10px] font-pixel px-1.5 py-0.5 rounded border border-black font-bold">ONLINE</span>
+                </div>
+
+                <div class="p-6 md:p-8 space-y-6">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-700 pb-4">
+                        <div>
+                            <h2 class="text-2xl font-black text-y2k-cyan flex items-center gap-2">
+                                <i class="fa-solid fa-sparkles text-y2k-yellow"></i> AI 自動搜尋 & 整理演唱會資訊
+                            </h2>
+                            <p class="text-xs text-slate-300 mt-1">輸入歌手與演唱會名稱，Gemini 會幫你搜尋正確歌單（Setlist）、場地亮點與經典語錄！</p>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="aiQuery" placeholder="如: 五月天 回答諾亞方舟 台北" 
+                                class="bg-slate-800 border-2 border-y2k-cyan rounded-lg p-2 text-xs text-white placeholder-slate-400 focus:outline-none w-48 sm:w-64">
+                            <button onclick="fetchAiConcertInfo()" class="bg-y2k-yellow hover:bg-yellow-400 text-black border-2 border-black px-3 py-2 rounded-lg font-bold text-xs shadow-y2k whitespace-nowrap">
+                                <i class="fa-solid fa-magnifying-glass"></i> AI 檢索
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- AI Result Display Box -->
+                    <div id="aiResultBox" class="bg-slate-800/80 border-2 border-slate-600 rounded-xl p-5 min-h-[140px] flex flex-col justify-center relative">
+                        <div id="aiPlaceholder" class="text-center space-y-2 text-slate-400">
+                            <i class="fa-solid fa-brain-circuit text-3xl text-y2k-pink"></i>
+                            <p class="text-xs">請點擊「AI 檢索」或填寫上方表單，Gemini 智慧模型將即時為你檢索該場演唱會資訊！</p>
+                        </div>
+
+                        <div id="aiLoading" class="hidden text-center space-y-3">
+                            <div class="inline-block animate-spin text-y2k-cyan text-3xl">
+                                <i class="fa-solid fa-compact-disc"></i>
+                            </div>
+                            <p class="text-xs text-y2k-yellow font-pixel tracking-wider animate-pulse">SEARCHING_GLOBAL_SETLIST_DATABASE...</p>
+                        </div>
+
+                        <div id="aiContent" class="hidden space-y-3 text-xs md:text-sm">
+                            <!-- Dynamic Content populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. YouTube 背景音樂播放器 (Y2K Player) -->
+        <section id="player" class="fade-in-section">
+            <div class="y2k-window bg-gradient-to-r from-pink-200 via-purple-200 to-cyan-200 p-6 md:p-8">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    
+                    <!-- CD Animation Graphic -->
+                    <div class="relative w-36 h-36 flex-shrink-0">
+                        <div class="w-36 h-36 rounded-full bg-slate-900 border-4 border-black shadow-y2k flex items-center justify-center relative overflow-hidden animate-spin-cd">
+                            <div class="w-14 h-14 rounded-full bg-gradient-to-tr from-cyan-400 via-pink-400 to-yellow-300 border-2 border-black flex items-center justify-center">
+                                <div class="w-5 h-5 rounded-full bg-white border border-black"></div>
+                            </div>
+                        </div>
+                        <span class="absolute -bottom-2 -right-2 bg-y2k-yellow border-2 border-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-y2k">
+                            Y2K BGM
+                        </span>
+                    </div>
+
+                    <!-- Player Controller & Input -->
+                    <div class="flex-1 w-full space-y-3">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="bg-black text-y2k-lime font-pixel text-xs px-2 py-0.5 rounded">BACKGROUND_PLAYER.WAV</span>
+                                <h3 id="currentSongTitle" class="text-xl font-black text-slate-900 mt-1">
+                                    🎵 五月天 Mayday - 倔強 (Live 現場版)
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- YouTube URL / ID Input -->
+                        <div class="flex gap-2">
+                            <input type="text" id="ytUrlInput" placeholder="貼上 YouTube 影片網址或 ID (例如: vS_4R_qD64g)" 
+                                class="flex-1 border-2 border-black rounded-lg p-2 text-xs font-bold shadow-y2k focus:outline-none">
+                            <button onclick="changeYtVideo()" class="bg-y2k-hotpink text-white border-2 border-black px-4 py-2 rounded-lg font-bold text-xs shadow-y2k hover:bg-pink-600">
+                                更換歌曲
+                            </button>
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div class="flex flex-wrap items-center gap-2 text-[11px] font-bold text-slate-700">
+                            <span>推薦 Live BGM:</span>
+                            <button onclick="loadYtId('vS_4R_qD64g', '五月天 - 倔強 Live')" class="underline hover:text-y2k-hotpink">五月天 倔強</button>
+                            <button onclick="loadYtId('d9IxdwEFk1c', 'IU - Celebration Live')" class="underline hover:text-y2k-hotpink">IU 現場歌單</button>
+                            <button onclick="loadYtId('K4DyBUG242c', 'Taylor Swift - Cruel Summer')" class="underline hover:text-y2k-hotpink">Taylor Swift</button>
+                        </div>
+
+                        <!-- YouTube Player Embed Area -->
+                        <div class="pt-2">
+                            <div id="ytIframeContainer" class="rounded-xl overflow-hidden border-2 border-black shadow-y2k bg-black h-36 md:h-44 w-full relative">
+                                <iframe id="ytPlayer" class="w-full h-full" 
+                                    src="https://www.youtube.com/embed/vS_4R_qD64g?enablejsapi=1&autoplay=0&origin=https://www.youtube.com" 
+                                    title="YouTube video player" frameborder="0" 
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    allowfullscreen></iframe>
+                            </div>
+                            <div class="mt-2 flex justify-between items-center text-[11px] text-slate-600 font-bold">
+                                <span>💡 提示：如部分歌曲因唱片公司版權限制無法嵌入播放，可點右側開啟</span>
+                                <a id="ytExternalLink" href="https://www.youtube.com/watch?v=vS_4R_qD64g" target="_blank" class="bg-y2k-yellow border border-black px-2 py-0.5 rounded shadow text-black hover:bg-yellow-300">
+                                    <i class="fa-solid fa-arrow-up-right-from-square mr-1"></i> 在 YouTube 開啟
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 我的演唱會記憶牆 (Memory Cards Grid) -->
+        <section id="memory-wall" class="fade-in-section space-y-6">
+            <div class="flex justify-between items-end border-b-4 border-black pb-3">
+                <div>
+                    <span class="bg-y2k-pink text-white border-2 border-black font-pixel text-xs px-2 py-0.5 rounded shadow-y2k">ARCHIVE</span>
+                    <h2 class="text-3xl font-black text-slate-900 mt-1">💖 我的演唱會珍藏門票牆</h2>
+                </div>
+                <span id="recordCount" class="text-xs font-bold bg-white border-2 border-black px-3 py-1 rounded-full shadow-y2k">
+                    已收藏 2 場 Concert
+                </span>
+            </div>
+
+            <!-- Grid Container -->
+            <div id="cardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamic cards will be rendered here by JS -->
+            </div>
+        </section>
+
+        <!-- 6. 互動提醒區與結尾總結 + CTA -->
+        <section class="fade-in-section pt-8">
+            <div class="y2k-window bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-100 p-8 text-center space-y-6 relative">
+                
+                <div class="max-w-2xl mx-auto space-y-3">
+                    <div class="inline-block bg-black text-y2k-yellow font-pixel text-sm px-3 py-1 rounded-full shadow-y2k">
+                        MY_CONCERT_BOX.SYS
+                    </div>
+                    <h2 class="text-2xl font-black text-slate-900">
+                        準備好記錄你的下一場演唱會了嗎？
+                    </h2>
+                    <p class="text-xs md:text-sm text-slate-700 font-medium">
+                        隨時保持門票紀錄更新，打造專屬於你的門票收藏庫！
+                    </p>
+                </div>
+
+                <!-- Core CTA Button -->
+                <div class="pt-2">
+                    <button onclick="triggerFinalCta()" class="group relative inline-block bg-y2k-hotpink text-white font-black text-lg px-8 py-4 rounded-2xl border-3 border-black shadow-y2k-lg hover:bg-pink-600 transition-all active:translate-x-1 active:translate-y-1">
+                        <span class="flex items-center gap-2">
+                            ✨ 點擊檢視：門票整理的核心小建議 ✨
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-20 border-t-4 border-black bg-white py-6 text-center text-xs font-bold text-slate-600">
+        <p>✨ Y2K CONCERT MEMORY BOX ARCHIVE © 2026 | 網站製作大師 特製 ✨</p>
+    </footer>
+
+    <!-- MODAL 1: Point Reminder / Tip Modal -->
+    <div id="tip-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="y2k-window bg-white max-w-sm w-full animate-float">
+            <div class="y2k-window-header">
+                <span id="modal-tip-title" class="text-xs font-pixel font-bold text-white tracking-widest">TIP_NOTICE.SYS</span>
+                <button onclick="toggleModal('tip-modal')" class="text-white hover:text-yellow-300 font-bold">✕</button>
+            </div>
+            <div class="p-5 space-y-4 text-center">
+                <div class="w-12 h-12 rounded-full bg-y2k-cyan border-2 border-black flex items-center justify-center mx-auto text-2xl shadow-y2k">
+                    💡
+                </div>
+                <p id="modal-tip-content" class="text-sm font-bold text-slate-800 leading-relaxed">
+                    重點提示內容
+                </p>
+                <button onclick="toggleModal('tip-modal')" class="w-full bg-y2k-yellow border-2 border-black py-2 rounded-lg font-bold text-xs shadow-y2k hover:bg-yellow-300">
+                    知道了！
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: Final CTA Core Conclusion Modal -->
+    <div id="cta-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="y2k-window bg-white max-w-md w-full p-1 relative border-4 border-black shadow-y2k-lg">
+            <div class="y2k-window-header !bg-gradient-to-r !from-y2k-hotpink !to-y2k-purple">
+                <span class="text-xs font-pixel font-bold text-white tracking-widest">💖 CORE_CONCLUSION.EXE</span>
+                <button onclick="toggleModal('cta-modal')" class="text-white hover:text-yellow-300 font-bold">✕</button>
+            </div>
+            <div class="p-6 text-center space-y-5 bg-gradient-to-b from-pink-50 to-white">
+                <div class="text-5xl animate-bounce">🎟️✨</div>
+                
+                <h3 class="text-2xl font-black text-y2k-hotpink">
+                    「去見現場的人，永遠是最浪漫的事！」
+                </h3>
+
+                <p class="text-sm text-slate-700 leading-relaxed font-bold">
+                    演唱會門票會隨時間褪色，但那些在台上閃閃發光的人、以及在台下全力以赴應援的你，都是青春裡最閃耀的恆星！願你繼續奔赴下一場熱愛！
+                </p>
+
+                <div class="pt-2">
+                    <button onclick="toggleModal('cta-modal')" class="bg-y2k-cyan text-black border-2 border-black px-6 py-2.5 rounded-xl font-black text-sm shadow-y2k hover:bg-cyan-300">
+                        收到！繼續記錄下一場 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 3: Instructions Modal -->
+    <div id="info-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="y2k-window bg-white max-w-lg w-full">
+            <div class="y2k-window-header">
+                <span class="text-xs font-pixel font-bold text-white tracking-widest">📖 USER_GUIDE.TXT</span>
+                <button onclick="toggleModal('info-modal')" class="text-white hover:text-yellow-300 font-bold">✕</button>
+            </div>
+            <div class="p-6 space-y-4 text-xs md:text-sm text-slate-700 font-medium">
+                <h4 class="font-black text-base text-y2k-hotpink border-b-2 border-black pb-1">✨ 如何使用演唱會寶盒：</h4>
+                <ol class="list-decimal list-inside space-y-2">
+                    <li><b>上傳記憶：</b>在表單填寫演唱會資訊並上傳門票相片。</li>
+                    <li><b>AI 智慧搜尋：</b>使用 Gemini API 幫你一鍵搜尋現場的精確歌單（Setlist）與演唱會備忘。</li>
+                    <li><b>連結 YouTube：</b>貼上演唱會現場影片網址，即可在瀏覽寶盒時同步收聽現場主題曲。</li>
+                    <li><b>永遠保存：</b>記錄會保存在瀏覽器中，隨時重溫美好時刻！</li>
+                </ol>
+                <div class="pt-3 text-right">
+                    <button onclick="toggleModal('info-modal')" class="bg-y2k-yellow border-2 border-black px-4 py-1.5 rounded-lg font-bold text-xs shadow-y2k">
+                        了解！
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Default Sample Concert Data
+        const defaultConcerts = [
+            {
+                id: 1,
+                artist: "五月天 Mayday",
+                tour: "回到那一天 25週年巡迴演唱會",
+                date: "2024-01-07",
+                venue: "台中洲際棒球場",
+                note: "全場十萬人合唱《笑忘歌》，煙火綻放的那一瞬間真的眼眶濕了！",
+                image: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=600&q=80",
+                setlist: ["1. OAOA", "2. 孫悟空", "3. 乾杯", "4. 倔強 (Encore)"]
+            },
+            {
+                id: 2,
+                artist: "IU (李知恩)",
+                tour: "H.E.R. World Tour Concert",
+                date: "2024-04-06",
+                venue: "台北小巨蛋",
+                note: "知恩準備了中文歌驚喜，聲音甜到不行，360度環形舞台太震撼了！",
+                image: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=600&q=80",
+                setlist: ["1. Holssi", "2. BBIBBI", "3. Blueming", "4. Love wins all"]
+            }
+        ];
+
+        let concerts = [];
+        let currentUploadedImageData = null;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            const saved = localStorage.getItem('y2k_concert_records');
+            if (saved) {
+                try {
+                    concerts = JSON.parse(saved);
+                } catch(e) {
+                    concerts = defaultConcerts;
+                }
+            } else {
+                concerts = defaultConcerts;
+            }
+            renderCards();
+            setupIntersectionObserver();
+        });
+
+        // Save to LocalStorage
+        function saveToStorage() {
+            localStorage.setItem('y2k_concert_records', JSON.stringify(concerts));
+        }
+
+        // Render Memory Cards Grid
+        function renderCards() {
+            const container = document.getElementById('cardsContainer');
+            const countEl = document.getElementById('recordCount');
+            countEl.innerText = `已收藏 ${concerts.length} 場 Concert`;
+
+            if (concerts.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full bg-white border-2 border-black rounded-2xl p-8 text-center text-slate-500 shadow-y2k">
+                        <p class="font-bold text-sm">目前還沒有任何門票紀錄喔！快在上方上傳第一張吧 🎫</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = concerts.map(item => `
+                <div class="y2k-window bg-white hover:-translate-y-1 transition-transform group">
+                    <div class="y2k-window-header">
+                        <span class="text-xs font-pixel text-white font-bold tracking-widest">${item.date}</span>
+                        <button onclick="deleteConcert(${item.id})" class="text-white hover:text-red-300 text-xs font-bold" title="刪除">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+
+                    <!-- Photo Polaroid Effect -->
+                    <div class="p-4 bg-yellow-50/50">
+                        <div class="relative bg-white border-2 border-black p-2 shadow-y2k rounded-lg overflow-hidden">
+                            <img src="${item.image || 'https://placehold.co/600x400/ff7eb9/ffffff?text=Concert+Ticket'}" 
+                                alt="${item.artist}" 
+                                class="w-full h-44 object-cover rounded border border-slate-200">
+                            
+                            <span class="absolute top-4 right-4 bg-y2k-yellow border border-black text-[10px] font-black px-2 py-0.5 rounded shadow">
+                                LIVE PASS
+                            </span>
+                        </div>
+
+                        <!-- Ticket Info Details -->
+                        <div class="mt-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h3 class="font-black text-lg text-y2k-hotpink leading-tight">${item.artist}</h3>
+                            </div>
+                            <p class="text-xs font-bold text-slate-800">${item.tour}</p>
+                            <p class="text-[11px] text-slate-500 font-medium">📍 ${item.venue || '演唱會場館'}</p>
+
+                            ${item.note ? `
+                                <div class="bg-pink-100/70 border border-pink-300 rounded-lg p-2 text-xs text-slate-700 italic">
+                                    " ${item.note} "
+                                </div>
+                            ` : ''}
+
+                            ${item.setlist && item.setlist.length > 0 ? `
+                                <div class="pt-2">
+                                    <span class="text-[10px] font-pixel bg-black text-y2k-cyan px-1.5 py-0.5 rounded">SETLIST 歌單</span>
+                                    <ul class="text-[11px] text-slate-600 font-medium mt-1 space-y-0.5">
+                                        ${item.setlist.slice(0, 3).map(song => `<li>• ${song}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Handle Image Upload Preview
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUploadedImageData = e.target.result;
+                    const preview = document.getElementById('imagePreview');
+                    const prompt = document.getElementById('uploadPrompt');
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    prompt.classList.add('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Form Submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            
+            const artist = document.getElementById('artistName').value;
+            const tour = document.getElementById('tourName').value;
+            const date = document.getElementById('concertDate').value;
+            const venue = document.getElementById('venue').value;
+            const note = document.getElementById('personalNote').value;
+
+            const newConcert = {
+                id: Date.now(),
+                artist,
+                tour,
+                date,
+                venue,
+                note,
+                image: currentUploadedImageData || 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=600&q=80',
+                setlist: ["1. 開場特別曲", "2. 主打連唱", "3. 經典金曲安可"]
+            };
+
+            concerts.unshift(newConcert);
+            saveToStorage();
+            renderCards();
+
+            // Reset Form
+            document.getElementById('concertForm').reset();
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('uploadPrompt').classList.remove('hidden');
+            currentUploadedImageData = null;
+
+            showTip('儲存成功！', '已將這場美好的演唱會門票加入你的時光寶盒囉 ✨');
+            
+            // Scroll to Memory Wall
+            document.getElementById('memory-wall').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Delete Record
+        function deleteConcert(id) {
+            if (confirm('確定要刪除這場演唱會門票記錄嗎？')) {
+                concerts = concerts.filter(c => c.id !== id);
+                saveToStorage();
+                renderCards();
+            }
+        }
+
+        // Gemini AI Integration for Concert Search
+        async function fetchAiConcertInfo() {
+            const queryInput = document.getElementById('aiQuery');
+            const artistVal = document.getElementById('artistName').value;
+            const tourVal = document.getElementById('tourName').value;
+
+            let searchTerm = queryInput.value.trim();
+            if (!searchTerm && (artistVal || tourVal)) {
+                searchTerm = `${artistVal} ${tourVal}`;
+            }
+
+            if (!searchTerm) {
+                showTip('請輸入關鍵字', '請在 AI 搜尋框輸入歌手或演唱會名稱！');
+                return;
+            }
+
+            const placeholder = document.getElementById('aiPlaceholder');
+            const loading = document.getElementById('aiLoading');
+            const content = document.getElementById('aiContent');
+
+            placeholder.classList.add('hidden');
+            content.classList.add('hidden');
+            loading.classList.remove('hidden');
+
+            const apiKey = ""; // Canvas handles runtime Gemini key
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+
+            const promptText = `請以簡體中文或繁體中文，搜尋並整理演唱會資訊「${searchTerm}」。
+請用 JSON 格式回傳，格式如下：
+{
+  "artist": "歌手名",
+  "tour": "巡迴名稱",
+  "highlights": "這場演唱會的經典亮點或特色摘要（約60字）",
+  "setlist": ["曲目1", "曲目2", "曲目3", "安可曲"]
+}`;
+
+            try {
+                // Implement Exponential Backoff for API fetch
+                let response;
+                let delay = 1000;
+                for (let i = 0; i < 3; i++) {
+                    try {
+                        response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{ parts: [{ text: promptText }] }],
+                                tools: [{ "google_search": {} }] // Enable Google Search Grounding
+                            })
+                        });
+                        if (response.ok) break;
+                    } catch (e) {
+                        if (i === 2) throw e;
+                    }
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+
+                const data = await response.json();
+                const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+
+                // Attempt to parse JSON or display text clean
+                loading.classList.add('hidden');
+                content.classList.remove('hidden');
+
+                let parsedData = null;
+                try {
+                    const jsonMatch = resultText.match(/\{[\s\S]*\}/);
+                    if (jsonMatch) {
+                        parsedData = JSON.parse(jsonMatch[0]);
+                    }
+                } catch(e) {}
+
+                if (parsedData) {
+                    content.innerHTML = `
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                                <span class="text-y2k-yellow font-black">🎤 ${parsedData.artist || searchTerm}</span>
+                                <span class="bg-y2k-pink text-white font-pixel text-[10px] px-2 py-0.5 rounded">AI SEARCH SUCCESS</span>
+                            </div>
+                            <p class="text-slate-300"><b>✨ 演唱會亮點：</b> ${parsedData.highlights || '現場氛圍爆棚，經典歌單連發！'}</p>
+                            <div>
+                                <b class="text-y2k-cyan">🎶 代表性經典歌單（Setlist）：</b>
+                                <ul class="grid grid-cols-2 gap-1 mt-1 text-slate-300">
+                                    ${(parsedData.setlist || []).map(s => `<li>• ${s}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = `
+                        <div class="space-y-2">
+                            <span class="text-y2k-yellow font-black">✨ AI 檢索結果 (摘要)：</span>
+                            <p class="text-slate-200 leading-relaxed">${resultText.replace(/```json|```/g, '')}</p>
+                        </div>
+                    `;
+                }
+
+            } catch (err) {
+                loading.classList.add('hidden');
+                content.classList.remove('hidden');
+                content.innerHTML = `
+                    <div class="text-red-400 font-bold">
+                        ❌ AI 檢索時遇到一點小問題，請稍微再試一次！
+                    </div>
+                `;
+            }
+        }
+
+        function triggerAiSearch() {
+            const artist = document.getElementById('artistName').value;
+            const tour = document.getElementById('tourName').value;
+            if(!artist && !tour) {
+                showTip('提醒', '請先在上方輸入歌手或演唱會名稱，再進行 AI 預先生成喔！');
+                return;
+            }
+            document.getElementById('ai-section').scrollIntoView({ behavior: 'smooth' });
+            fetchAiConcertInfo();
+        }
+
+        // YouTube Player Controls
+        function changeYtVideo() {
+            const val = document.getElementById('ytUrlInput').value.trim();
+            if (!val) return;
+
+            let videoId = val;
+            if (val.includes('v=')) {
+                videoId = val.split('v=')[1].split('&')[0];
+            } else if (val.includes('youtu.be/')) {
+                videoId = val.split('youtu.be/')[1].split('?')[0];
+            } else if (val.includes('embed/')) {
+                videoId = val.split('embed/')[1].split('?')[0];
+            }
+
+            loadYtId(videoId, '自訂演唱會 BGM');
+        }
+
+        function loadYtId(id, title) {
+            const iframe = document.getElementById('ytPlayer');
+            const extLink = document.getElementById('ytExternalLink');
+            
+            // Safe URL format with strict-origin policy
+            iframe.src = `https://www.youtube.com/embed/${id}?autoplay=1&enablejsapi=1&origin=${window.location.origin || 'https://www.youtube.com'}`;
+            document.getElementById('currentSongTitle').innerText = `🎵 ${title}`;
+            
+            if (extLink) {
+                extLink.href = `https://www.youtube.com/watch?v=${id}`;
+            }
+        }
+
+        // Modal Handlers
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function showTip(title, content) {
+            document.getElementById('modal-tip-title').innerText = title;
+            document.getElementById('modal-tip-content').innerText = content;
+            toggleModal('tip-modal');
+        }
+
+        function triggerFinalCta() {
+            toggleModal('cta-modal');
+        }
+
+        // Intersection Observer for Slide-in animations
+        function setupIntersectionObserver() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in-section').forEach(el => {
+                observer.observe(el);
+            });
+        }
+    </script>
+</body>
+</html>
